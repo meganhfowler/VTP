@@ -19,15 +19,18 @@ def create_dataframe_image(scores, outfile):
     dfi.export(print_scores, outfile, table_conversion = 'matplotlib')
 
 
-def main(infile, outfile):
+def main(date, infile, outfile):
+    scores = pd.read_csv('scores/2022_04_13.csv')
+    print(scores)
     latest_scores = pd.read_csv(infile).sort_values(by=['score'], ascending = False)
     adjusted_scores = convert_scores(latest_scores)
     adjusted_scores.to_csv(outfile)
 
 
-    create_dataframe_image(adjusted_scores, "tables/2020_03_30.png")
+    create_dataframe_image(adjusted_scores, 'tables/' + date + '.png')
 
 if __name__ == '__main__':
-    infile = sys.argv[1]
-    outfile = 'adjusted-scores/2020_03_30_adjusted.csv'
-    main(infile, outfile)
+    date = str(sys.argv[1])
+    infile = 'scores/' + date + '.csv'
+    outfile = 'adjusted-scores/' + date + '_adjusted.csv'
+    main(date, infile, outfile)
